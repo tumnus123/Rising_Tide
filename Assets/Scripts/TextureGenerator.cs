@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿// TextureGenerator.cs
+// Based on Sebastian Lague's tutorial series for Procedural Landmass Generation in Unity
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,18 +22,14 @@ public static class TextureGenerator
         int width = heightMap.GetLength(0);
         int height = heightMap.GetLength(1);
 
-        Texture2D texture = new Texture2D(width, height);
-
         Color[] colourMap = new Color[width * height];
-        for (int x = 0; x < width; x++)
+        for (int y = 0; y < height; y++)
         {
-            for (int y = 0; y < height; y++)
+            for (int x = 0; x < width; x++)
             {
                 colourMap[y * width + x] = Color.Lerp(Color.black, Color.white, heightMap[x, y]);
             }
         }
-        texture.SetPixels(colourMap);
-        texture.Apply();
 
         return TextureFromColourMap(colourMap, width, height);
     }

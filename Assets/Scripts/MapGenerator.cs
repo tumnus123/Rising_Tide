@@ -1,10 +1,13 @@
-﻿using System.Collections;
+﻿// MapGenerator.cs
+// Based on Sebastian Lague's tutorial series for Procedural Landmass Generation in Unity
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    public enum DrawMode { NoiseMap, ColourMap };
+    public enum DrawMode { NoiseMap, ColourMap, Mesh };
     public DrawMode drawMode;
     
     public int mapWidth;
@@ -18,6 +21,8 @@ public class MapGenerator : MonoBehaviour
 
     public int seed;
     public Vector2 offset;
+
+    public float meshHeightMultiplier;
 
     public bool autoUpdate;
 
@@ -46,6 +51,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         MapDisplay display = FindObjectOfType<MapDisplay>();
+        
         if (drawMode == DrawMode.NoiseMap)
         {
             display.DrawTexture(TextureGenerator.TextureFromHeightMap(noiseMap));
@@ -53,6 +59,10 @@ public class MapGenerator : MonoBehaviour
         else if (drawMode == DrawMode.ColourMap)
         {
             display.DrawTexture(TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
+        }
+        else if (drawMode == DrawMode.Mesh)
+        {
+            display.DrawMesh(MeshGenerator.GenerateTerrainMesh(noiseMap, meshHeightMultiplier), TextureGenerator.TextureFromColourMap(colourMap, mapWidth, mapHeight));
         }
         
     }
